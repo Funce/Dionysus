@@ -9,6 +9,11 @@ from PIL import Image
 import numpy as np
 import difflib
 
+whitelisted_folders = [
+    "icons",
+    "dionysus_icons"
+]
+
 BUF_SIZE = 65536  # lets read stuff in 64kb chunks!
 chop_filename = re.compile(r"^.*(\..+?)$", re.M)
 chop_extension = re.compile(r"^(.*)\..+?$", re.M)
@@ -75,9 +80,11 @@ fail_count = 0
 output_hash = {}
 files = []
 if platform.system() == "Windows":
-    files = glob.glob(f"{path_to_us}\..\\..\\icons\\**\*.toml", recursive = True)
+    for folder in whitelisted_folders:
+        files += glob.glob(f"{path_to_us}\..\\..\\" + folder + "\\**\*.toml", recursive = True)
 else:
-    files = glob.glob(f"{path_to_us}/../../icons/**/*.toml", recursive = True)
+    for folder in whitelisted_folders:
+        files += glob.glob(f"{path_to_us}/../../" + folder + "/**/*.toml", recursive = True)
 for cutter_template in files:
     resource_name = re.sub(chop_extension, r"\1", cutter_template, count = 1)
     if not os.path.isfile(resource_name):

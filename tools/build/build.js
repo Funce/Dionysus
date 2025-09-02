@@ -159,6 +159,30 @@ export const IconCutterTarget = new Juke.Target({
   },
 });
 
+export const DionysusIconCutterTarget = new Juke.Target({
+  parameters: [ForceRecutParameter],
+  dependsOn: () => [CutterTarget],
+  inputs: [
+    "dionysus_icons/**/*.png",
+    `dionysus_icons/**/*${CUTTER_SUFFIX}`,
+    `cutter_templates/**/*${CUTTER_SUFFIX}`,
+    cutter_path,
+  ],
+  outputs: ({ get }) => {
+    if (get(ForceRecutParameter)) return [];
+    const folders = [...Juke.glob(`dionysus_icons/**/*${CUTTER_SUFFIX}`)];
+    return folders.map((file) => file.replace(`${CUTTER_SUFFIX}`, ".dmi"));
+  },
+  executes: async () => {
+    await Juke.exec(cutter_path, [
+      "--dont-wait",
+      "--templates",
+      "cutter_templates",
+      "dionysus_icons",
+    ]);
+  },
+});
+
 export const DmMapsIncludeTarget = new Juke.Target({
   executes: async () => {
     const folders = [
@@ -181,6 +205,7 @@ export const DmTarget = new Juke.Target({
   dependsOn: ({ get }) => [
     get(DefineParameter).includes("ALL_MAPS") && DmMapsIncludeTarget,
     IconCutterTarget,
+    DionysusIconCutterTarget,
   ],
   inputs: [
     "_maps/map_files/generic/**",
@@ -207,6 +232,7 @@ export const DmTestTarget = new Juke.Target({
   dependsOn: ({ get }) => [
     get(DefineParameter).includes("ALL_MAPS") && DmMapsIncludeTarget,
     IconCutterTarget,
+    DionysusIconCutterTarget,
   ],
   executes: async ({ get }) => {
     fs.copyFileSync(`${DME_NAME}.dme`, `${DME_NAME}.test.dme`);
@@ -239,6 +265,7 @@ export const AutowikiTarget = new Juke.Target({
   dependsOn: ({ get }) => [
     get(DefineParameter).includes("ALL_MAPS") && DmMapsIncludeTarget,
     IconCutterTarget,
+    DionysusIconCutterTarget,
   ],
   outputs: ["data/autowiki_edits.txt"],
   executes: async ({ get }) => {
