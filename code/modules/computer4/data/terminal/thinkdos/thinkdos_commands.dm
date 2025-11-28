@@ -7,7 +7,7 @@
 
 /// Attempt to execute the command. Return TRUE if *any* action is taken.
 /datum/shell_command/proc/try_exec(command_name, datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
-	if(!(command_name in aliases))
+	if(!(lowertext(command_name) in aliases))
 		return FALSE
 
 	exec(system, program, arguments, options)
@@ -63,20 +63,26 @@
 /// Print the contents of the current directory.
 /datum/shell_command/thinkdos/dir
 	aliases = list("dir", "catalog", "ls")
-	help_text = "Prints the contents of the current directory."
+	help_text = "Prints the contents of a directory.<br>Usage: 'dir \[directory?\]'"
 
 /datum/shell_command/thinkdos/dir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
-	system.println("<b>Current folder: [system.current_directory.path_to_string()]</b>", FALSE)
+	var/inputted_path = jointext(arguments, " ")
+	var/datum/c4_file/folder/targeted_dir = system.parse_directory(inputted_path, system.current_directory)
+	if(!targeted_dir)
+		system.print_error("<b>Error:</b> Invalid directory or path.")
+		return
+
+	system.println("<b>Contents of [targeted_dir.path_to_string()]:</b>", FALSE)
 
 	var/list/directory_text = list()
 	var/list/cache_spaces = new /list(16)
 
 	var/longest_name_length = 0
-	for(var/datum/c4_file/file in system.current_directory.contents)
+	for(var/datum/c4_file/file in targeted_dir.contents)
 		if(length(file.name) > longest_name_length)
 			longest_name_length = length(file.name)
 
-	for(var/datum/c4_file/file in system.current_directory.contents)
+	for(var/datum/c4_file/file in targeted_dir.contents)
 		var/str = ""
 		if(file == system)
 			str = "[file.name] - SYSTEM"
@@ -119,11 +125,6 @@
 		return
 
 	var/target_dir = jointext(arguments, " ")
-
-	if(target_dir == "/")
-		system.change_dir(system.drive.root)
-		system.println("<b>Current Directory is now [system.current_directory.path_to_string()]</b>")
-		return
 
 	var/datum/c4_file/folder/new_dir = system.parse_directory(target_dir, system.current_directory)
 	if(!new_dir)
@@ -426,7 +427,7 @@
 /// Renames the drive title
 /datum/shell_command/thinkdos/title
 	aliases = list("title")
-	help_text = "Changes the name of the current drivee.<br>Usage: 'title \[new name\]'"
+	help_text = "Changes the name of the current .<br>Usage: 'title \[new name\]'"
 
 /datum/shell_command/thinkdos/title/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
@@ -457,18 +458,23 @@
 		system.print_error("<b>Error: Cannot find executable.")
 		return
 
-	program.get_computer().execute_program(program_to_run)
+	system.execute_program(program_to_run)
 
 /datum/shell_command/thinkdos/tree
 	aliases = list("tree")
-	help_text = "Displays the file system structure relative to the current directory.<br>Usage: 'tree \[options?\]'<br><br>-f, --file &nbsp&nbsp&nbsp&nbsp&nbsp&nbspDisplay files."
+	help_text = "Displays the file system structure relative to a directory.<br>Usage: 'tree \[options?\] \[directory?\]'<br><br>-f, --file &nbsp&nbsp&nbsp&nbsp&nbsp&nbspDisplay files."
 
 /datum/shell_command/thinkdos/tree/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/datum/c4_file/folder/targeted_dir = system.parse_directory(jointext(arguments, " "), system.current_directory)
+	if(!targeted_dir)
+		system.print_error("<b>Error:</b> Invalid directory or path.")
+		return
+
 	var/show_files = !!length(options & list("f", "files"))
 
-	var/list/output = list(system.current_directory == system.drive.root ? system.drive.title : system.current_directory.name)
+	var/list/output = list((targeted_dir == system.drive.root) ? system.drive.title : targeted_dir.name)
 
-	search_dir(system.current_directory, output, show_files, 1)
+	search_dir(targeted_dir, output, show_files, 1)
 
 	system.println(jointext(output, "<br>"))
 
@@ -524,9 +530,8 @@
 /datum/shell_command/thinkdos_backprog/view/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/list/out = list("<b>Current programs in memory:</b>")
 
-	var/obj/machinery/computer4/computer = system.get_computer()
 	var/count = 0
-	for(var/datum/c4_file/terminal_program/running_program as anything in computer.processing_programs)
+	for(var/datum/c4_file/terminal_program/running_program as anything in system.processing_programs)
 		count++
 		out += "<b>ID: [count]</b> [running_program == system ? "SYSTEM" : running_program.name]"
 
@@ -541,17 +546,16 @@
 		system.println("<b>Syntax:</b> backprog kill \[program id\]")
 		return
 
-	var/obj/machinery/computer4/computer = system.get_computer()
-	if(!(id in 1 to length(computer.processing_programs)))
+	if(!(id in 1 to length(system.processing_programs)))
 		system.print_error("<b>Error:</b> Array index out of bounds.")
 		return
 
-	var/datum/c4_file/terminal_program/to_kill = computer.processing_programs[id]
+	var/datum/c4_file/terminal_program/to_kill = system.processing_programs[id]
 	if(to_kill == system)
 		system.print_error("<b>Error:</b> Unable to terminate process.")
 		return
 
-	computer.unload_program(to_kill)
+	system.unload_program(to_kill)
 	system.println("Terminated [to_kill.name].")
 
 /datum/shell_command/thinkdos_backprog/switch_prog
@@ -563,17 +567,16 @@
 		system.println("<b>Syntax:</b> backprog switch \[program id\]")
 		return
 
-	var/obj/machinery/computer4/computer = system.get_computer()
-	if(!(id in 1 to length(computer.processing_programs)))
+	if(!(id in 1 to length(system.processing_programs)))
 		system.print_error("<b>Error:</b> Array index out of bounds.")
 		return
 
-	var/datum/c4_file/terminal_program/to_run = computer.processing_programs[id]
+	var/datum/c4_file/terminal_program/to_run = system.processing_programs[id]
 	if(to_run == system)
 		system.print_error("<b>Error:</b> Process already focused.")
 		return
 
-	computer.execute_program(to_run)
+	system.execute_program(to_run)
 
 /datum/shell_command/thinkdos/login
 	aliases = list("login", "logon")

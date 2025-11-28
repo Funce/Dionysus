@@ -4,6 +4,7 @@
 		ensure Security is following protocol and Space Law."
 	department_head = list(JOB_DIRECTOR_OF_PORT_SERVICES)
 	faction = FACTION_STATION
+	pinpad_key = "memejob"
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the head of personnel"

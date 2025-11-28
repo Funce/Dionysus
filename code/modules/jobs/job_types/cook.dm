@@ -3,6 +3,7 @@
 	description = "Serve food, cook meat, keep the crew fed."
 	department_head = list(JOB_DIRECTOR_OF_PORT_SERVICES)
 	faction = FACTION_STATION
+	pinpad_key = "starvation"
 	total_positions = 2
 	spawn_positions = 1
 	exp_granted_type = EXP_TYPE_CREW

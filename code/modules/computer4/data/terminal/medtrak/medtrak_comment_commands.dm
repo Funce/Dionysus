@@ -3,7 +3,7 @@
 
 /datum/shell_command/medtrak/index/quit/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	system.println("Quitting...")
-	program.get_computer().unload_program(program)
+	system.unload_program(program)
 
 /datum/shell_command/medtrak/comment/back
 	aliases = list("back", "home")
@@ -26,5 +26,5 @@
 		return
 
 	medtrak.current_record.fields[DATACORE_COMMENTS] ||= list()
-	medtrak.current_record.fields[DATACORE_COMMENTS] += "[system.current_user.registered_name] on [stationtime2text()] [time2text(world.realtime, "MMM DD")], [CURRENT_STATION_YEAR]: [html_encode(stdin.raw)]"
+	medtrak.current_record.fields[DATACORE_COMMENTS] += "[system.current_user.registered_name] on [stationtime2text()] [time2text(world.realtime, "MMM DD")], '77: [html_encode(stdin.raw)]"
 	medtrak.view_comments()

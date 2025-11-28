@@ -2,6 +2,7 @@
 	title = JOB_COMPLIANCE_AUDITOR
 	description = "Investigate crimes. Solve crimes. Cover up crimes."
 	faction = FACTION_STATION
+	pinpad_key = "columbo"
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "nobody"

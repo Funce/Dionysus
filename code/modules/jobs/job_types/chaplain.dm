@@ -4,6 +4,7 @@
 		religion, protect the crew against cults."
 	department_head = list(JOB_DIRECTOR_OF_PORT_SERVICES)
 	faction = FACTION_STATION
+	pinpad_key = "falseprophet"
 	total_positions = 1
 	spawn_positions = 1
 	exp_granted_type = EXP_TYPE_CREW
