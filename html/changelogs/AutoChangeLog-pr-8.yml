@@ -1,0 +1,5 @@
+author: Francinum, Kapu, RimiNosha
+delete-after: true
+changes:
+  - rscadd: Pinpads, which used to control doors.
+  - bugfix: Voidcomputer help command works now.
