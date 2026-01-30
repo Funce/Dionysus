@@ -2,7 +2,7 @@ DEFINE_INTERACTABLE(/obj/structure/extinguisher_cabinet)
 /obj/structure/extinguisher_cabinet
 	name = "extinguisher cabinet"
 	desc = "A small wall mounted cabinet designed to hold a fire extinguisher."
-	icon = 'icons/obj/wallmounts.dmi'
+	icon = 'icons/obj/extinguisher.dmi'
 	icon_state = "extinguisher_closed"
 	anchored = TRUE
 	density = FALSE
@@ -20,6 +20,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 		icon_state = "extinguisher_empty"
 	else
 		stored_extinguisher = new /obj/item/extinguisher(src)
+	update_icon()
 
 /obj/structure/extinguisher_cabinet/Destroy()
 	if(stored_extinguisher)
@@ -127,15 +128,24 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 
 /obj/structure/extinguisher_cabinet/update_icon_state()
 	if(!opened)
-		icon_state = "extinguisher_closed"
-		return ..()
-	if(!stored_extinguisher)
-		icon_state = "extinguisher_empty"
-		return ..()
-	if(istype(stored_extinguisher, /obj/item/extinguisher/mini))
-		icon_state = "extinguisher_mini"
-		return ..()
-	icon_state = "extinguisher_full"
+		if(stored_extinguisher)
+			if(istype(stored_extinguisher, /obj/item/extinguisher/mini))
+				icon_state = "extinguisher_mini_closed"
+			else if(istype(stored_extinguisher, /obj/item/extinguisher/advanced))
+				icon_state = "extinguisher_advanced_closed"
+			else
+				icon_state = "extinguisher_standard_closed"
+		else
+			icon_state = "extinguisher_empty_closed"
+	else if(stored_extinguisher)
+		if(istype(stored_extinguisher, /obj/item/extinguisher/mini))
+			icon_state = "extinguisher_mini_open"
+		else if(istype(stored_extinguisher, /obj/item/extinguisher/advanced))
+			icon_state = "extinguisher_advanced_open"
+		else
+			icon_state = "extinguisher_standard_open"
+	else
+		icon_state = "extinguisher_empty_open"
 	return ..()
 
 /obj/structure/extinguisher_cabinet/atom_break(damage_flag)

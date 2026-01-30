@@ -485,7 +485,7 @@
 /obj/structure/frame,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/item/circuitboard/machine/announcement_system,
-/obj/item/stock_parts/micro_laser/quadultra,
+/obj/item/stock_parts/micro_laser/ultra,
 /obj/item/stock_parts/matter_bin/adv,
 /turf/open/floor/circuit/green,
 /area/ruin/space/has_grav/hotel)
@@ -1787,7 +1787,7 @@
 "qz" = (
 /obj/structure/frame,
 /obj/item/stack/cable_coil/five,
-/obj/item/stock_parts/micro_laser/quadultra,
+/obj/item/stock_parts/micro_laser/ultra,
 /turf/open/floor/circuit/green,
 /area/ruin/space/has_grav/hotel)
 "qE" = (

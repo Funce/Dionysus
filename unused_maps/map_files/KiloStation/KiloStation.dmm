@@ -56363,11 +56363,11 @@
 	dir = 8
 	},
 /obj/machinery/firealarm/directional/west,
-/obj/machinery/computer/cryopod{
+/obj/machinery/computer/cryostasis{
 	pixel_x = -32;
 	pixel_y = 26
 	},
-/obj/machinery/cryopod,
+/obj/machinery/cryostasis_pod,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron/dark,
 /area/station/commons/locker)
@@ -61781,7 +61781,7 @@
 	dir = 8
 	},
 /obj/machinery/firealarm/directional/north,
-/obj/machinery/cryopod,
+/obj/machinery/cryostasis_pod,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron/dark,
 /area/station/commons/locker)
@@ -70670,7 +70670,7 @@
 	dir = 8
 	},
 /obj/machinery/light/directional/north,
-/obj/machinery/cryopod,
+/obj/machinery/cryostasis_pod,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron/dark,
 /area/station/commons/locker)

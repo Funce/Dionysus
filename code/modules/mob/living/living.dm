@@ -2304,3 +2304,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/set_nutrition(change)
 	. = ..()
 	mob_mood?.update_nutrition_moodlets()
+
+/mob/living/Logout()
+	last_client_time = world.time
+	. = ..()

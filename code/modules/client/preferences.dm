@@ -173,10 +173,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		data["character_profiles"] = create_character_profiles()
 		tainted_character_profiles = FALSE
 
-	//PARIAH EDIT BEGIN
 	data["preview_options"] = list(PREVIEW_PREF_JOB,PREVIEW_PREF_LOADOUT, PREVIEW_PREF_UNDERWEAR)
 	data["preview_selection"] = preview_pref
-	//PARIAH EDIT END
 
 	data["character_preferences"] = compile_character_preferences(user)
 

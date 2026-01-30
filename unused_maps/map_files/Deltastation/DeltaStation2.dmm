@@ -29055,8 +29055,8 @@
 /turf/open/floor/plating,
 /area/security/medical)
 "gov" = (
-/obj/machinery/cryopod,
-/obj/machinery/computer/cryopod{
+/obj/machinery/cryostasis_pod,
+/obj/machinery/computer/cryostasis{
 	pixel_y = 26
 	},
 /obj/effect/turf_decal/tile/green{
@@ -43577,7 +43577,7 @@
 /turf/open/floor/iron/dark,
 /area/engineering/atmos)
 "kyZ" = (
-/obj/machinery/cryopod{
+/obj/machinery/cryostasis_pod{
 	dir = 1
 	},
 /obj/machinery/airalarm/directional/south,
@@ -57407,7 +57407,7 @@
 /turf/open/floor/iron,
 /area/security/prison)
 "oCi" = (
-/obj/machinery/cryopod{
+/obj/machinery/cryostasis_pod{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/green,
@@ -63546,7 +63546,7 @@
 /turf/open/floor/carpet,
 /area/service/library/abandoned)
 "qse" = (
-/obj/machinery/cryopod,
+/obj/machinery/cryostasis_pod,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/effect/turf_decal/tile/green{
 	dir = 4
@@ -82779,7 +82779,7 @@
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "wch" = (
-/obj/machinery/cryopod,
+/obj/machinery/cryostasis_pod,
 /obj/effect/turf_decal/tile/green{
 	dir = 4
 	},

@@ -4,7 +4,7 @@ TYPEINFO_DEF(/obj/item/extinguisher)
 /obj/item/extinguisher
 	name = "fire extinguisher"
 	desc = "A traditional red fire extinguisher."
-	icon = 'icons/obj/items_and_weapons.dmi'
+	icon = 'icons/obj/extinguisher.dmi'
 	icon_state = "fire_extinguisher0"
 	worn_icon_state = "fire_extinguisher"
 	inhand_icon_state = "fire_extinguisher"
@@ -35,6 +35,8 @@ TYPEINFO_DEF(/obj/item/extinguisher)
 	var/cooling_power = 2 //Sets the cooling_temperature of the water reagent datum inside of the extinguisher when it is refilled
 	/// Icon state when inside a tank holder
 	var/tank_holder_icon_state = "holder_extinguisher"
+	/// Non-special extinguishers can have a random overlay. Doesn't have to be a number. Prefixed with "ex_overlay_"
+	var/random_overlay = 0
 
 TYPEINFO_DEF(/obj/item/extinguisher/mini)
 	default_materials = list(/datum/material/iron = 50, /datum/material/glass = 40)
@@ -90,6 +92,11 @@ TYPEINFO_DEF(/obj/item/extinguisher/crafted)
 	refill()
 	if(tank_holder_icon_state)
 		AddComponent(/datum/component/container_item/tank_holder, tank_holder_icon_state)
+	set_random_overlay()
+	update_icon()
+
+/obj/item/extinguisher/proc/set_random_overlay()
+	random_overlay = rand(1, 6)
 
 /obj/item/extinguisher/advanced
 	name = "advanced fire extinguisher"
@@ -266,3 +273,8 @@ TYPEINFO_DEF(/obj/item/extinguisher/crafted)
 		user.put_in_hands(new /obj/item/bot_assembly/firebot)
 	else
 		..()
+
+/obj/item/extinguisher/update_overlays()
+	. = ..()
+	if(!istype(src, /obj/item/extinguisher/mini) && !istype(src, /obj/item/extinguisher/advanced))
+		. += "ex_overlay_[random_overlay]"

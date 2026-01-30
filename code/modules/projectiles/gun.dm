@@ -131,6 +131,9 @@ TYPEINFO_DEF(/obj/item/gun)
 	var/ammo_x_offset = 0
 	var/ammo_y_offset = 0
 
+	/// Is this on a gum rack? Tracking var, do not edit. Use place_on_rack or remove_from_rack.
+	var/on_rack = FALSE
+
 /obj/item/gun/Initialize(mapload)
 	. = ..()
 	if(pin)
@@ -484,5 +487,21 @@ TYPEINFO_DEF(/obj/item/gun)
 	if(!usr.put_in_hands(suppressed))
 		suppressed.forceMove(drop_location())
 	clear_suppressor()
+
+/obj/item/gun/proc/place_on_rack()
+	on_rack = TRUE
+	var/matrix/M = matrix()
+	M.Turn(-90)
+	transform = M
+
+/obj/item/gun/proc/remove_from_rack()
+	if(on_rack)
+		var/matrix/M = matrix()
+		transform = M
+		on_rack = FALSE
+
+/obj/item/gun/pickup(mob/user)
+	. = ..()
+	remove_from_rack()
 
 #undef FIRING_PIN_REMOVAL_DELAY

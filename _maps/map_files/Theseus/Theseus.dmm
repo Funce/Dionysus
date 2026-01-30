@@ -6791,7 +6791,7 @@
 /turf/open/floor/iron/ported/techfloor,
 /area/station/engineering/supermatter/room)
 "cuw" = (
-/obj/machinery/cryopod{
+/obj/machinery/cryostasis_pod{
 	dir = 4
 	},
 /obj/structure/sign/warning/securearea{
@@ -38000,7 +38000,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/aft)
 "oas" = (
-/obj/machinery/cryopod{
+/obj/machinery/cryostasis_pod{
 	dir = 4
 	},
 /obj/machinery/light/small/directional/north,
@@ -41094,7 +41094,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
 "pid" = (
-/obj/machinery/cryopod{
+/obj/machinery/cryostasis_pod{
 	dir = 8
 	},
 /obj/machinery/light/small/directional/north,
@@ -41545,7 +41545,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lesser)
 "ptM" = (
-/obj/machinery/cryopod{
+/obj/machinery/cryostasis_pod{
 	dir = 8
 	},
 /turf/open/floor/iron/ported/techfloor,
@@ -47090,7 +47090,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
 "rwn" = (
-/obj/machinery/cryopod{
+/obj/machinery/cryostasis_pod{
 	dir = 4
 	},
 /obj/item/radio/intercom/directional/north,
@@ -56581,7 +56581,7 @@
 /turf/open/floor/carpet,
 /area/station/service/chapel)
 "uXA" = (
-/obj/machinery/cryopod{
+/obj/machinery/cryostasis_pod{
 	dir = 8
 	},
 /obj/structure/extinguisher_cabinet/directional/north,
@@ -57974,7 +57974,7 @@
 /turf/closed/wall/prepainted/daedalus,
 /area/station/engineering/storage/mech)
 "vwh" = (
-/obj/machinery/cryopod{
+/obj/machinery/cryostasis_pod{
 	dir = 4
 	},
 /turf/open/floor/iron/ported/techfloor,
@@ -64651,7 +64651,7 @@
 /area/station/maintenance/aft/upper)
 "xUp" = (
 /obj/effect/turf_decal/tile/neutral/opposingcorners,
-/obj/machinery/computer/cryopod{
+/obj/machinery/computer/cryostasis{
 	pixel_y = 26
 	},
 /turf/open/floor/iron,

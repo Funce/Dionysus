@@ -13,13 +13,15 @@
 
 // Get a unit-less numeric value
 @function num($value) {
-  @if meta.type-of($value) != number {
+  @if meta.type-of($value) !=number {
     @error 'Could not convert `#{$value}` - must be `type-of number`';
     @return null;
   }
+
   @if math.unit($value) == '%' {
     @return math.div($value, 100%);
   }
+
   @return math.div($value, $value * 0 + 1);
 }
 
@@ -41,12 +43,12 @@
 
 // Increases perceptual color lightness.
 @function lighten($color, $amount) {
-  @return color.adjust($color, $lightness: $amount * 1%, $space: hsl);
+  @return color.adjust($color, $lightness: $amount, $space: hsl);
 }
 
 // Decreases perceptual color lightness.
 @function darken($color, $amount) {
-  @return color.adjust($color, $lightness: -$amount * 1%, $space: hsl);
+  @return color.adjust($color, $lightness: -$amount, $space: hsl);
 }
 
 // Returns the NTSC luminance of `$color` as a float (between 0 and 1).
@@ -61,12 +63,14 @@
   @each $name, $value in $colors {
     $adjusted: 0;
     $value: math.div($value, 255);
+
     @if $value < 0.03928 {
       $value: math.div($value, 12.92);
     } @else {
       $value: math.div($value + 0.055, 1.055);
       $value: math.pow($value, 2.4);
     }
+
     $colors: map.merge(
       $colors,
       (
@@ -75,8 +79,8 @@
     );
   }
 
-  @return (map.get($colors, 'red') * 0.2126) +
-    (map.get($colors, 'green') * 0.7152) + (map.get($colors, 'blue') * 0.0722);
+  @return (map.get($colors, 'red') * 0.2126)+
+    (map.get($colors, 'green') * 0.7152)+ (map.get($colors, 'blue') * 0.0722);
 }
 
 // Blends an RGBA color with a static background color based on its

@@ -2,9 +2,9 @@
 	if(stat >= UNCONSCIOUS)
 		return
 
-	var/list/combined_msg = list("<div class='examine_block'>") //PARIAH EDIT CHANGE
+	var/list/combined_msg = list("<div class='examine_block'>")
 
-	visible_message(span_notice("[src] examines [p_them()]self.")) //PARIAH EDIT CHANGE
+	visible_message(span_notice("[src] examines [p_them()]self."))
 
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 

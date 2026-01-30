@@ -797,7 +797,7 @@
 /area/ruin/unpowered/no_grav)
 "ty" = (
 /obj/structure/table/reinforced/plastitaniumglass,
-/obj/item/stock_parts/matter_bin/bluespace{
+/obj/item/stock_parts/manipulator/pico{
 	pixel_y = 7
 	},
 /turf/open/floor/mineral/plastitanium,
@@ -821,10 +821,10 @@
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "up" = (
 /obj/structure/table/reinforced/plastitaniumglass,
-/obj/item/stock_parts/matter_bin/bluespace{
+/obj/item/stock_parts/manipulator/pico{
 	pixel_y = 7
 	},
-/obj/item/stock_parts/matter_bin/bluespace{
+/obj/item/stock_parts/manipulator/pico{
 	pixel_x = -16;
 	pixel_y = 7
 	},
@@ -842,10 +842,10 @@
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "uG" = (
 /obj/structure/table/reinforced/plastitaniumglass,
-/obj/item/stock_parts/matter_bin/bluespace{
+/obj/item/stock_parts/manipulator/pico{
 	pixel_y = 7
 	},
-/obj/item/stock_parts/matter_bin/bluespace{
+/obj/item/stock_parts/manipulator/pico{
 	pixel_x = 16;
 	pixel_y = 7
 	},

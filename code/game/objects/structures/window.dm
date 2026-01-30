@@ -4,6 +4,7 @@ TYPEINFO_DEF(/obj/structure/window)
 /obj/structure/window
 	name = "window"
 	desc = "A window."
+	icon = 'icons/obj/directwindow.dmi' // Swapped out by fulltile windows because they have custom rendering.
 	icon_state = "window"
 	density = TRUE
 	layer = ABOVE_OBJ_LAYER //Just above doors

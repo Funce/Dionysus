@@ -481,7 +481,7 @@ There are several things that need to be remembered:
 		if(check_obscured_slots() & ITEM_SLOT_HEAD)
 			return
 
-		var/handled_by_bodytype = TRUE //PARIAH EDIT
+		var/handled_by_bodytype = TRUE
 		var/icon_file
 
 		if(dna.species.bodytype & BODYTYPE_SNOUTED)
@@ -579,13 +579,11 @@ There are several things that need to be remembered:
 		var/icon_file
 		var/handled_by_bodytype = TRUE
 
-		//PARIAH EDIT
 		//More currently unused digitigrade handling
 		if(dna.species.bodytype & BODYTYPE_DIGITIGRADE)
 			if(worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION)
 				icon_file = wear_suit.worn_icon_digitigrade || DIGITIGRADE_SUIT_FILE
 
-		//PARIAH EDIT END
 		if(dna.species.bodytype & BODYTYPE_TESHARI)
 			if(worn_item.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
 				icon_file = TESHARI_SUIT_FILE

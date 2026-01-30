@@ -70,6 +70,14 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	///The area this thing is in.
 	var/area/my_area = null
 
+	var/turning_on = FALSE // Prevents lag from spamming lights.
+	var/constant_flickering = FALSE
+	var/flicker_timer = null
+	var/roundstart_flicker = FALSE
+	/// Should this turn red when a firealarm is on in the area?
+	var/firealarm = FALSE
+	var/maploaded = FALSE
+
 /obj/machinery/light/Move()
 	if(status != LIGHT_BROKEN)
 		break_light_tube(TRUE)
@@ -79,6 +87,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 /obj/machinery/light/Initialize(mapload)
 	. = ..()
 	SET_TRACKING(__TYPE__)
+	maploaded = mapload
 
 	if(start_with_cell && !no_emergency)
 		cell = new/obj/item/stock_parts/cell/emergency_light(src)
@@ -102,7 +111,10 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 			if(prob(1))
 				break_light_tube(TRUE)
 	#endif
-	update(FALSE, TRUE, FALSE)
+
+	update(FALSE, TRUE, FALSE, maploaded)
+	if(roundstart_flicker)
+		start_flickering()
 
 /obj/machinery/light/Destroy()
 	UNSET_TRACKING(__TYPE__)
@@ -117,8 +129,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 /obj/machinery/light/update_icon_state()
 	switch(status) // set icon_states
 		if(LIGHT_OK)
-			//var/area/local_area = get_area(src) //PARIAH EDIT REMOVAL
-			if(emergency_mode || firealarm) //PARIAH EDIT CHANGE
+			if(emergency_mode || firealarm)
 				icon_state = "[base_state]_emergency"
 			else
 				icon_state = "[base_state]"
@@ -138,7 +149,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	if(!overlay_icon)
 		return
 
-	if(emergency_mode || firealarm) //PARIAH EDIT END
+	if(emergency_mode || firealarm)
 		. += mutable_appearance(overlay_icon, "[base_state]_emergency")
 		return
 	. += mutable_appearance(overlay_icon, base_state)
@@ -162,13 +173,11 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 			pixel_x = -10
 			pixel_y = 0
 
-//PARIAH EDIT ADDITION
 #define LIGHT_ON_DELAY_UPPER 3 SECONDS
 #define LIGHT_ON_DELAY_LOWER 1 SECONDS
-//PARIAH EDIT END
 
 // update the icon_state and luminosity of the light depending on its state
-/obj/machinery/light/proc/update(trigger = TRUE, instant = FALSE, play_sound = TRUE) //PARIAH EDIT CHANGE
+/obj/machinery/light/proc/update(trigger = TRUE, instant = FALSE, play_sound = TRUE, maploaded = FALSE)
 	switch(status)
 		if(LIGHT_BROKEN,LIGHT_BURNED,LIGHT_EMPTY)
 			on = FALSE
@@ -208,10 +217,8 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 
 	broken_sparks(start_only=TRUE)
 
-//PARIAH EDIT
 #undef LIGHT_ON_DELAY_UPPER
 #undef LIGHT_ON_DELAY_LOWER
-//PARIAH EDIT END
 
 /obj/machinery/light/update_atom_colour()
 	..()
@@ -298,14 +305,12 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 		replacer.ReplaceLight(src, user)
 		return TRUE
 
-	//PARIAH EDIT ADDITION
 	if(istype(tool, /obj/item/multitool) && constant_flickering)
 		to_chat(user, span_notice("You start repairing the ballast of [src] with [tool]."))
 		if(do_after(user, src, 2 SECONDS, DO_PUBLIC, display = tool))
 			stop_flickering()
 			to_chat(user, span_notice("You repair the ballast of [src]!"))
 		return TRUE
-	//PARIAH EDIT END
 
 	// attempt to insert light
 	if(istype(tool, /obj/item/light))
@@ -439,16 +444,14 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 // if a light is turned off, it won't activate emergency power
 /obj/machinery/light/proc/turned_off()
 	var/area/local_area = get_area(src)
-	return !local_area.lightswitch && local_area.power_light || flickering || constant_flickering //PARIAH EDIT CHANGE
+	return !local_area.lightswitch && local_area.power_light || flickering || constant_flickering
 
 // returns whether this light has power
 // true if area has power and lightswitch is on
 /obj/machinery/light/proc/has_power()
 	var/area/local_area = get_area(src)
-	//PARIAH EDIT ADDITION
 	if(isnull(local_area))
 		return FALSE
-	//PARIAH EDIT END
 	return local_area.lightswitch && local_area.power_light
 
 // returns whether this light has emergency power
@@ -495,6 +498,88 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 		update(FALSE, TRUE)
 
 	flickering = FALSE
+
+/obj/machinery/light/proc/turn_on(trigger, play_sound = TRUE)
+	if(QDELETED(src))
+		return
+	turning_on = FALSE
+	if(!on)
+		return
+	var/OR = bulb_outer_range
+	var/IR = bulb_inner_range
+	var/PO = bulb_power
+	var/CO = bulb_colour
+	var/FC = bulb_falloff
+	if(color)
+		CO = color
+	if (firealarm)
+		CO = bulb_emergency_colour
+
+	var/matching = light && OR == light.light_outer_range && IR == light.light_inner_range && PO == light.light_power && CO == light.light_color && FC == light.light_falloff_curve
+	if(!matching)
+		switchcount++
+		if(rigged)
+			if(status == LIGHT_OK && trigger)
+				explode()
+		else if( prob( min(60, (switchcount**2)*0.01) ) )
+			if(trigger)
+				burn_out()
+		else
+			if(use_power != NO_POWER_USE)
+				use_power = ACTIVE_POWER_USE
+			set_light(l_outer_range = OR, l_inner_range = IR, l_power = PO, l_falloff_curve = FC, l_color = CO)
+			if(play_sound)
+				playsound(src.loc, 'sound/effects/light_on.ogg', 65, 1)
+
+/obj/machinery/light/proc/start_flickering()
+	if(constant_flickering)
+		return
+
+	on = FALSE
+	update(FALSE, TRUE, FALSE)
+
+	constant_flickering = TRUE
+
+	flicker_timer = addtimer(CALLBACK(src, PROC_REF(flicker_on)), rand(5, 10))
+
+/obj/machinery/light/proc/stop_flickering()
+	if(!constant_flickering)
+		return
+
+	constant_flickering = FALSE
+
+	if(flicker_timer)
+		deltimer(flicker_timer)
+		flicker_timer = null
+
+	set_on(has_power())
+
+/obj/machinery/light/proc/alter_flicker(enable = TRUE)
+	if(!constant_flickering)
+		return
+	if(has_power())
+		on = enable
+		update(FALSE, TRUE, FALSE)
+
+/obj/machinery/light/proc/flicker_on()
+	alter_flicker(TRUE)
+	flicker_timer = addtimer(CALLBACK(src, PROC_REF(flicker_off)), rand(5, 10), TIMER_STOPPABLE|TIMER_DELETE_ME)
+
+/obj/machinery/light/proc/flicker_off()
+	alter_flicker(FALSE)
+	flicker_timer = addtimer(CALLBACK(src, PROC_REF(flicker_on)), rand(5, 50), TIMER_STOPPABLE|TIMER_DELETE_ME)
+
+/obj/machinery/light/proc/firealarm_on()
+	SIGNAL_HANDLER
+
+	firealarm = TRUE
+	update()
+
+/obj/machinery/light/proc/firealarm_off()
+	SIGNAL_HANDLER
+
+	firealarm = FALSE
+	update()
 
 // ai attack - make lights flicker, because why not
 

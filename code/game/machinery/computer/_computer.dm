@@ -1,3 +1,5 @@
+#define CLICKSOUND_TIME 5 SECONDS
+
 DEFINE_INTERACTABLE(/obj/machinery/computer)
 TYPEINFO_DEF(/obj/machinery/computer)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 40, ACID = 20)
@@ -19,6 +21,11 @@ TYPEINFO_DEF(/obj/machinery/computer)
 	var/icon_screen = "generic"
 	var/time_to_screwdrive = 20
 	var/authenticated = 0
+
+	/// Sound to play when the computer is clicked on.
+	var/clicksound = SFX_KEYBOARD
+	var/clickvol = 40
+	var/next_clicksound
 
 /obj/machinery/computer/Initialize(mapload, obj/item/circuitboard/C)
 	. = ..()
@@ -136,6 +143,12 @@ TYPEINFO_DEF(/obj/machinery/computer)
 	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH) || !is_operational)
 		return
 
+/obj/machinery/computer/interact(mob/user, special_state)
+	. = ..()
+	if(clicksound && world.time > next_clicksound && isliving(user))
+		next_clicksound = world.time + CLICKSOUND_TIME
+		playsound(src, get_sfx(clicksound), clickvol)
+
 /obj/machinery/computer/ui_interact(mob/user, datum/tgui/ui)
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
@@ -145,3 +158,5 @@ TYPEINFO_DEF(/obj/machinery/computer)
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
 	update_use_power(IDLE_POWER_USE)
+
+#undef CLICKSOUND_TIME

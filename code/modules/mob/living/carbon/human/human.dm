@@ -849,6 +849,7 @@
 	VV_DROPDOWN_OPTION(VV_HK_MOD_MUTATIONS, "Add/Remove Mutation")
 	VV_DROPDOWN_OPTION(VV_HK_MOD_QUIRKS, "Add/Remove Quirks")
 	VV_DROPDOWN_OPTION(VV_HK_SET_SPECIES, "Set Species")
+	VV_DROPDOWN_OPTION(VV_HK_SEND_TO_CRYO, "Send to Cryogenic Storage")
 
 /mob/living/carbon/human/vv_do_topic(list/href_list)
 	. = ..()
@@ -909,6 +910,9 @@
 			var/newtype = GLOB.species_list[result]
 			admin_ticket_log("[key_name_admin(usr)] has modified the bodyparts of [src] to [result]")
 			set_species(newtype)
+	if(href_list[VV_HK_SEND_TO_CRYO])
+		var/result = input(usr, "Place a notice where they were?") as null|anything in list("Yes", "No")
+		send_to_cryo(result == "Yes")
 
 /mob/living/carbon/human/mouse_buckle_handling(mob/living/M, mob/living/user)
 	var/obj/item/hand_item/grab/G = is_grabbing(M)

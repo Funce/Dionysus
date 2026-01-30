@@ -230,12 +230,10 @@ SUBSYSTEM_DEF(vote)
 			if(usr.client.holder)
 				initiate_vote(/datum/vote/custom, usr.ckey)
 
-		//PARIAH EDIT ADDITION BEGIN - autotransfer
 		if("transfer")
 			if(check_rights(R_ADMIN))
 				initiate_vote(/datum/vote/crew_transfer, usr.ckey)
 
-		//PARIAH EDIT ADDITION END
 		if("vote")
 			submit_vote(usr, round(text2num(params["index"])))
 	return TRUE

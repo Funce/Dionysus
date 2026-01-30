@@ -70,11 +70,9 @@ export type Department = {
 };
 
 export type Job = {
-  // PARIAH EDIT
   alt_titles?: string[];
   department: string;
   description: string;
-  // PARIAH EDIT END
 };
 
 export type Quirk = {
@@ -126,7 +124,6 @@ export type PreferencesMenuData = {
   antag_bans?: string[];
 
   antag_days_left?: Record<string, number>;
-  // PARIAH EDIT ADDITION
   character_preferences: {
     clothing: Record<string, string>;
     features: Record<string, string>;
@@ -167,13 +164,11 @@ export type PreferencesMenuData = {
       required_playtime: number;
     }
   >;
-  // PARIAH EDIT ADDITION
   keybindings: Record<string, string[]>;
   name_to_use: string;
 
   overflow_role: string;
   preview_options: string;
-  // PARIAH EDIT ADDITION
   preview_selection: string;
 
   selected_antags: string[];

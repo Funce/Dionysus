@@ -31,6 +31,7 @@ $background-beige: #e8e4c9;
 .EmbeddedController__Button--keypad {
   background-color: $background-beige;
   border-color: $background-beige;
+
   &:hover {
     background-color: lighten($background-beige, 15%) !important;
     border-color: lighten($background-beige, 15%) !important;

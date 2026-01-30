@@ -279,7 +279,7 @@
  * * ignored_mob (optional) doesn't show any message to a given mob if TRUE.
  * * separation (otional) is what goes between the name of the person and the message, defaults to " ". PARIAH ADDITION
  */
-/atom/proc/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE, separation = " ") //PARIAH EDIT ADDITION - Better emotes
+/atom/proc/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE, separation = " ")
 	var/turf/T = get_turf(src)
 	if(!T)
 		return
@@ -331,7 +331,7 @@
 
 
 ///Adds the functionality to self_message.
-/mob/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE, separation = " ") //PARIAH EDIT ADDITION - Better emotes
+/mob/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE, separation = " ")
 	. = ..()
 	if(self_message)
 		show_message(self_message, MSG_VISUAL, blind_message, MSG_AUDIBLE)
@@ -345,9 +345,9 @@
  * * message is the message output to anyone who can hear.
  * * deaf_message (optional) is what deaf people will see.
  * * hearing_distance (optional) is the range, how many tiles away the message can be heard.
- * * separation (otional) is what goes between the name of the person and the message, defaults to " ". PARIAH EDIT ADDITION
+ * * separation (otional) is what goes between the name of the person and the message, defaults to " ".
  */
-/atom/proc/audible_message(message, deaf_message, hearing_distance = DEFAULT_MESSAGE_RANGE, self_message, audible_message_flags = NONE, separation = " ") //PARIAH EDIT ADDITION - Better emotes
+/atom/proc/audible_message(message, deaf_message, hearing_distance = DEFAULT_MESSAGE_RANGE, self_message, audible_message_flags = NONE, separation = " ")
 	var/list/hearers = get_hearers_in_view(hearing_distance, src)
 
 	#ifdef ZMIMIC_MULTIZ_SPEECH
@@ -361,7 +361,7 @@
 
 	var/raw_msg = message
 	if(audible_message_flags & EMOTE_MESSAGE)
-		message = "<span class='emote'><b>[src]</b>[separation][message]</span>" //PARIAH EDIT - Better emotes
+		message = "<span class='emote'><b>[src]</b>[separation][message]</span>"
 	for(var/atom/movable/AM as anything in hearers)
 		if(istype(AM, /obj))
 			continue
@@ -382,7 +382,7 @@
  * * deaf_message (optional) is what deaf people will see.
  * * hearing_distance (optional) is the range, how many tiles away the message can be heard.
  */
-/mob/audible_message(message, deaf_message, hearing_distance = DEFAULT_MESSAGE_RANGE, self_message, audible_message_flags = NONE, separation = " ") //PARIAH EDIT ADDITION - Better emotes
+/mob/audible_message(message, deaf_message, hearing_distance = DEFAULT_MESSAGE_RANGE, self_message, audible_message_flags = NONE, separation = " ")
 	. = ..()
 	if(self_message)
 		show_message(self_message, MSG_AUDIBLE, deaf_message, MSG_VISUAL)
@@ -623,7 +623,7 @@
 		if(!findtext(result[i], "<hr>"))
 			result[i] += "\n"
 
-	to_chat(src, "<div class='examine_block'><span class='infoplain'>[result.Join()]</span></div>") //PARIAH EDIT CHANGE
+	to_chat(src, "<div class='examine_block'><span class='infoplain'>[result.Join()]</span></div>")
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
 	return TRUE
 
@@ -1001,7 +1001,6 @@
 
 	return data
 
-//PARIAH EDIT ADDITION
 #define MOB_FACE_DIRECTION_DELAY 1
 
 // facing verbs
@@ -1074,7 +1073,6 @@
 	setDir(SOUTH)
 	client.last_turn = world.time + MOB_FACE_DIRECTION_DELAY
 	return TRUE
-//PARIAH EDIT END
 
 /// Attempt to swap hand slots to the desired held index.
 /mob/proc/try_swap_hand(held_index, silent = FALSE)

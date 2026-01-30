@@ -173,7 +173,8 @@ SUBSYSTEM_DEF(datacore)
 				department_list.Insert(1, null)
 				department_list[1] = entry
 			else
-				department_list[++department_list.len] = entry
+				department_list.len++
+				department_list[department_list.len] = entry
 
 	// Trim the empty categories.
 	for (var/department in manifest_out)
@@ -223,10 +224,8 @@ SUBSYSTEM_DEF(datacore)
 	var/datum/job/job = H.mind.assigned_role
 	var/assignment = H.mind.assigned_role.title
 
-	//PARIAH EDIT ADDITION
 	// The alt job title, if user picked one, or the default
 	var/chosen_assignment = C?.prefs.alt_job_titles[assignment] || assignment
-	//PARIAH EDIT END
 
 	var/id = next_record_id()
 	if(!C)
@@ -240,7 +239,7 @@ SUBSYSTEM_DEF(datacore)
 	G.fields[DATACORE_ID] = id
 
 	G.fields[DATACORE_NAME] = H.real_name
-	G.fields[DATACORE_RANK] = chosen_assignment //PARIAH EDIT
+	G.fields[DATACORE_RANK] = chosen_assignment
 	G.fields[DATACORE_TEMPLATE_RANK] = assignment
 	G.fields[DATACORE_INITIAL_RANK] = assignment
 	G.fields[DATACORE_AGE] = H.age
@@ -299,7 +298,7 @@ SUBSYSTEM_DEF(datacore)
 	L.fields[DATACORE_ID] = id
 	L.fields[DATACORE_NAME] = H.real_name
 	// L.fields[DATACORE_RANK] = assignment //ORIGINAL
-	L.fields[DATACORE_RANK] = chosen_assignment  //PARIAH EDIT
+	L.fields[DATACORE_RANK] = chosen_assignment
 	L.fields[DATACORE_TEMPLATE_RANK] = assignment
 	G.fields[DATACORE_INITIAL_RANK] = assignment
 	L.fields[DATACORE_AGE] = H.age
@@ -385,7 +384,8 @@ SUBSYSTEM_DEF(datacore)
 	c.time = time
 	c.fine = fine
 	c.paid = 0
-	c.dataId = ++securityCrimeCounter
+	securityCrimeCounter++
+	c.dataId = securityCrimeCounter
 	return c
 
 /// Checks if using the given access, something can access the given datacore key.

@@ -24,7 +24,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/mod)
 	icon_state = "chestplate"
 	base_icon_state = "chestplate"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
-	worn_icon_digitigrade = 'modular_pariah/master_files/icons/mob/mod.dmi'
+	worn_icon_digitigrade = 'icons/mob/mod.dmi'
 	blood_overlay_type = "armor"
 	body_parts_covered = CHEST|GROIN
 	heat_protection = CHEST|GROIN
@@ -61,7 +61,7 @@ TYPEINFO_DEF(/obj/item/clothing/shoes/mod)
 	icon_state = "boots"
 	base_icon_state = "boots"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
-	worn_icon_digitigrade = 'modular_pariah/master_files/icons/mob/mod.dmi'
+	worn_icon_digitigrade = 'icons/mob/mod.dmi'
 	body_parts_covered = FEET|LEGS
 	heat_protection = FEET|LEGS
 	cold_protection = FEET|LEGS

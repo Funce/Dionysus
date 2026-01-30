@@ -1,0 +1,2 @@
+## The time (in minutes) someone has to be absent from their character before they can be stuffed into a cryostasis pod by others.
+CRYOSTASIS_MIN_SSD_TIME 30

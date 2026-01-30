@@ -144,8 +144,8 @@
 	if (length(status_examines))
 		. += status_examines
 
-	var/appears_dead = isobserver(user)
-	if(stat != CONSCIOUS || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
+	var/appears_dead = FALSE
+	if(stat != CONSCIOUS || HAS_TRAIT(src, TRAIT_FAKEDEATH))
 		if(!adjacent)
 			. += span_alert("[t_He] is not moving.")
 		else
@@ -310,6 +310,13 @@
 				msg += "[span_deadsay("[t_He] do[t_es]n't appear to be [t_him]self.")]\n"
 			else if(!key)
 				msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
+			else if(!client)
+				if ((world.time - last_client_time) > 30 MINUTES)
+					msg += "[span_bold(span_deadsay("[t_He] [t_has] bloodshot eyes and [t_is] completely unresponsive to anything. [t_He] is unlikely to snap out of it soon."))]\n"
+				else if ((world.time - last_client_time) > 10 MINUTES)
+					msg += "[span_bold(span_deadsay("[t_He] [t_has] reddening eyes and [t_is] completely unresponsive to anything. [t_He] may snap out of it soon."))]\n"
+				else
+					msg += "[span_deadsay("[t_He] [t_has] a blank, absent-minded stare and [t_is] completely unresponsive to anything. [t_He] may snap out of it soon.")]\n"
 
 	if (length(msg))
 		. += span_alert("[msg.Join("")]")

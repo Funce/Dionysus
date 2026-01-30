@@ -149,10 +149,6 @@
  * If a PDA is in this list, it can always be painted with ACCESS_CHANGE_IDS.
  * Used to see pda_region in [/datum/controller/subsystem/id_access/proc/setup_tgui_lists]
  */
-/* PARIAH EDIT
-Replaced /pda/quartermaster with /pda/heads/quartermaster and moved it closer to other command PDAs
-Comment here because it really doesn't like them anywhere else here
-*/
 #define PDA_PAINTING_REGIONS list( \
 	/obj/item/modular_computer/tablet/pda = list(/datum/access_group/station/independent_areas), \
 	/obj/item/modular_computer/tablet/pda/clown = list(/datum/access_group/station/independent_areas), \

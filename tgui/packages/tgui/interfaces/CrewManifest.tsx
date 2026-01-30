@@ -23,8 +23,7 @@ type CrewManifestData = {
   manifest: Record<string, ManifestEntry[]>;
   positions: Record<string, ManifestPositions>;
 };
-// PARIAH EDIT
-// Any instance of crewMember.trim was originally crewMember.rank
+
 export const CrewManifest = (props) => {
   const {
     data: { manifest, positions },

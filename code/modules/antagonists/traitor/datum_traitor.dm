@@ -1,3 +1,9 @@
+#define EXTRA_OBJECTIVE_PROB 40
+/// Chance the traitor gets a kill objective. If this prob fails, they will get a steal objective instead.
+#define KILL_PROB 20
+/// If a kill objective is rolled, chance that it is to destroy the AI.
+#define DESTROY_AI_PROB(denominator) (100 / denominator)
+
 /datum/antagonist/traitor
 	name = "Traitor"
 	roundend_category = "traitors"
@@ -49,10 +55,10 @@
 		if(isturf(uplink_handler))
 			stack_trace("what")
 
-		uplink_handler.has_progression = FALSE //PARIAH EDIT
+		uplink_handler.has_progression = FALSE
 		SStraitor.register_uplink_handler(uplink_handler)
 
-		uplink_handler.has_objectives = FALSE //PARIAH EDIT
+		uplink_handler.has_objectives = FALSE
 		uplink_handler.generate_objectives()
 
 		if(uplink_handler.progression_points < SStraitor.current_global_progression)
@@ -76,6 +82,35 @@
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
 	return ..()
+
+/// Generates a complete set of traitor objectives up to the traitor objective limit, including non-generic objectives such as hijack.
+/datum/antagonist/traitor/proc/forge_traitor_objectives()
+	objectives.Cut()
+
+	var/datum/objective/O = new /datum/objective/gimmick
+	O.owner = owner
+	objectives += O
+
+	if(prob(EXTRA_OBJECTIVE_PROB))
+		if(prob(KILL_PROB))
+			var/list/active_ais = active_ais()
+			if(active_ais.len && prob(DESTROY_AI_PROB(GLOB.joined_player_list.len)))
+				O = new /datum/objective/destroy
+				O.owner = owner
+				O.find_target()
+				objectives += O
+				return
+			O = new /datum/objective/assassinate
+			O.owner = owner
+			O.find_target()
+			objectives += O
+			return
+		else
+			O = new /datum/objective/steal
+			O.owner = owner
+			O.find_target()
+			objectives += O
+			return
 
 /datum/antagonist/traitor/on_removal()
 	if(uplink_handler)
@@ -216,17 +251,6 @@
 
 	result += objectives_text
 
-	//PARIAH EDIT REMOVAL
-	/*
-	if(uplink_handler)
-		var/completed_objectives_text = "Completed Uplink Objectives: "
-		for(var/datum/traitor_objective/objective as anything in uplink_handler.completed_objectives)
-			if(objective.objective_state == OBJECTIVE_STATE_COMPLETED)
-				completed_objectives_text += "<br><B>[objective.name]</B> - ([objective.telecrystal_reward] TC, [round(objective.progression_reward/600, 0.1)] Reputation)"
-		result += completed_objectives_text
-	*/
-	//PARIAH EDIT REMOVAL
-
 	var/special_role_text = lowertext(name)
 
 	if(traitor_won)
@@ -275,3 +299,7 @@
 	var/icon/final_icon = finish_preview_icon(traitor_icon)
 
 	return final_icon
+
+#undef KILL_PROB
+#undef DESTROY_AI_PROB
+#undef EXTRA_OBJECTIVE_PROB

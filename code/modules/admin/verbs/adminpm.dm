@@ -220,7 +220,7 @@
 		)
 
 		var/datum/admin_help/AH = admin_ticket_log(src, "<font color='red'>Reply PM from-<b>[key_name(src, TRUE, TRUE)]</b> to <i>External</i>: [keywordparsedmsg]</font>")
-		AH.AddInteractionPlayer("<font color='red'>Reply PM from-<b>[key_name(src, TRUE, FALSE)]</b> to <i>External</i>: [keywordparsedmsg]</font>") // PARIAH EDIT ADDITION -- Player ticket viewing
+		AH.add_interaction("<font color='red'>Reply PM from-<b>[key_name(src, TRUE, FALSE)]</b> to <i>External</i>: [keywordparsedmsg]</font>")
 		externalreplyamount--
 		send2adminchat("[AH ? "#[AH.id] " : ""]Reply: [ckey]", rawmsg)
 	else
@@ -255,7 +255,7 @@
 
 			else //recipient is an admin but sender is not
 				var/replymsg = "<b>[key_name(src, recipient, 1)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"
-				admin_ticket_log(src, "<font color='red'>[replymsg]</font>", log_in_blackbox = FALSE, admin_only = FALSE) // PARIAH EDIT CHANGE -- Player ticket viewing
+				admin_ticket_log(src, "<font color='red'>[replymsg]</font>", log_in_blackbox = FALSE, admin_only = FALSE)
 
 				to_chat(recipient,
 					type = MESSAGE_TYPE_ADMINPM,
@@ -289,7 +289,7 @@
 						if(response == "No")
 							return
 				else
-					recipient.current_ticket.HandleIssue()
+					recipient.current_ticket.handle_issue()
 
 				var/recipient_message = "\
 				<div class='adminpmbox'>\
@@ -315,7 +315,7 @@
 					confidential = TRUE
 				)
 
-				admin_ticket_log(recipient, "<font color='purple'>PM From [key_name_admin(src, FALSE)]: [keywordparsedmsg]</font>", log_in_blackbox = FALSE, admin_only = FALSE) // PARIAH EDIT CHANGE -- Player ticket viewing
+				admin_ticket_log(recipient, "<font color='purple'>PM From [key_name_admin(src, FALSE)]: [keywordparsedmsg]</font>", log_in_blackbox = FALSE, admin_only = FALSE)
 
 				if(!already_logged) //Reply to an existing ticket
 					SSblackbox.LogAhelp(recipient.current_ticket.id, "Reply", msg, recipient.ckey, src.ckey)

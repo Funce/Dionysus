@@ -167,7 +167,7 @@
 	if(!(real_winner == INITIATE_TRANSFER))
 		return
 
-	SSshuttle.autoEnd()
+	SSshuttle.auto_end()
 	var/obj/machinery/computer/communications/C = locate() in INSTANCES_OF(/obj/machinery/computer/communications)
 	if(C)
 		C.post_status("shuttle")

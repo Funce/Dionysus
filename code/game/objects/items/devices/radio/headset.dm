@@ -32,6 +32,8 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 	dog_fashion = null
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	var/obj/item/encryptionkey/keyslot2 = null
+	/// Sound to play when someone speaks through this headset.
+	var/radiosound = 'sound/effects/radio/common.ogg'
 
 /obj/item/radio/headset/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins putting \the [src]'s antenna up [user.p_their()] nose! It looks like [user.p_theyre()] trying to give [user.p_them()]self cancer!"))
@@ -87,6 +89,11 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 		return attack_self(headset_user)
 	return ..()
 
+/obj/item/radio/headset/talk_into(mob/living/M, message, channel, list/spans, datum/language/language, list/message_mods)
+	. = ..()
+	if (. && radiosound && listening)
+		playsound(M, radiosound, rand(20, 30))
+
 /obj/item/radio/headset/syndicate //disguised to look like a normal headset for stealth ops
 
 /obj/item/radio/headset/syndicate/alt //undisguised bowman with flash protection
@@ -94,6 +101,7 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 	desc = "A syndicate headset that can be used to hear all radio frequencies. Protects ears from flashbangs."
 	icon_state = "syndie_headset"
 	inhand_icon_state = "syndie_headset"
+	radiosound = 'sound/effects/radio/syndie.ogg'
 
 /obj/item/radio/headset/syndicate/alt/Initialize(mapload)
 	. = ..()
@@ -119,6 +127,7 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 	desc = "This is used by your elite security force."
 	icon_state = "sec_headset"
 	keyslot = new /obj/item/encryptionkey/headset_sec
+	radiosound = 'sound/effects/radio/security.ogg'
 
 /obj/item/radio/headset/headset_sec/alt
 	name = "security bowman headset"

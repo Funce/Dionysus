@@ -150,7 +150,7 @@ export const DmTarget = new Juke.Target({
     "html/**",
     "icons/**",
     "interface/**",
-    "modular_pariah/**", //PARIAH EDIT
+    "modular_pariah/**",
     `${DME_NAME}.dme`,
   ],
   outputs: [`${DME_NAME}.dmb`, `${DME_NAME}.rsc`],

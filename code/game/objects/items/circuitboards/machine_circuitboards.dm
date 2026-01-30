@@ -5,7 +5,7 @@
 	greyscale_colors = CIRCUIT_COLOR_COMMAND
 	build_path = /obj/machinery/bsa/back //No freebies!
 	req_components = list(
-		/obj/item/stock_parts/capacitor/quadratic = 5,
+		/obj/item/stock_parts/capacitor/super = 5,
 		/obj/item/stack/cable_coil = 2)
 
 /obj/item/circuitboard/machine/bsa/front
@@ -13,7 +13,7 @@
 	greyscale_colors = CIRCUIT_COLOR_COMMAND
 	build_path = /obj/machinery/bsa/front
 	req_components = list(
-		/obj/item/stock_parts/manipulator/femto = 5,
+		/obj/item/stock_parts/manipulator/pico = 5,
 		/obj/item/stack/cable_coil = 2)
 
 /obj/item/circuitboard/machine/bsa/middle
@@ -623,9 +623,9 @@
 	icon_state = "abductor_mod"
 	build_path = /obj/machinery/chem_dispenser/abductor
 	req_components = list(
-		/obj/item/stock_parts/matter_bin/bluespace = 2,
-		/obj/item/stock_parts/capacitor/quadratic = 2,
-		/obj/item/stock_parts/manipulator/femto = 2,
+		/obj/item/stock_parts/matter_bin/super = 2,
+		/obj/item/stock_parts/capacitor/super = 2,
+		/obj/item/stock_parts/manipulator/pico = 2,
 		/obj/item/stack/sheet/glass = 1,
 	)
 	needs_anchored = FALSE
@@ -703,7 +703,7 @@
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
 	build_path = /obj/machinery/limbgrower
 	req_components = list(
-		/obj/item/stock_parts/manipulator/femto  = 1,
+		/obj/item/stock_parts/manipulator/pico  = 1,
 		/obj/item/reagent_containers/glass/beaker/bluespace = 2,
 		/obj/item/stack/sheet/glass = 1,
 		/obj/item/disk/data = 1
@@ -735,8 +735,8 @@
 	icon_state = "medical"
 	build_path = /obj/machinery/sleeper/syndie/fullupgrade
 	req_components = list(
-		/obj/item/stock_parts/matter_bin/bluespace = 1,
-		/obj/item/stock_parts/manipulator/femto = 1,
+		/obj/item/stock_parts/matter_bin/super = 1,
+		/obj/item/stock_parts/manipulator/pico = 1,
 		/obj/item/stack/cable_coil = 1,
 		/obj/item/stack/sheet/glass = 2)
 
@@ -1162,8 +1162,8 @@
 		/obj/item/stock_parts/micro_laser = 1,
 		/obj/item/stock_parts/cell/infinite/abductor = 1)
 	def_components = list(
-		/obj/item/stock_parts/capacitor = /obj/item/stock_parts/capacitor/quadratic,
-		/obj/item/stock_parts/micro_laser = /obj/item/stock_parts/micro_laser/quadultra)
+		/obj/item/stock_parts/capacitor = /obj/item/stock_parts/capacitor/super,
+		/obj/item/stock_parts/micro_laser = /obj/item/stock_parts/micro_laser/ultra)
 
 /obj/item/circuitboard/machine/hypnochair
 	name = "Enhanced Interrogation Chamber (Machine Board)"

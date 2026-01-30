@@ -32,7 +32,7 @@ import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 import { useRandomToggleState } from './useRandomToggleState';
 
 const CLOTHING_CELL_SIZE = 48;
-const CLOTHING_SIDEBAR_ROWS = 13.4; // PARIAH EDIT CHANGE - ORIGINAL:  9
+const CLOTHING_SIDEBAR_ROWS = 13.4;
 
 const CLOTHING_SELECTION_CELL_SIZE = 48;
 const CLOTHING_SELECTION_WIDTH = 5.4;
@@ -78,7 +78,6 @@ const CharacterControls = (props: {
         </Stack.Item>
       )}
       {props.handleLoadout && (
-        // PARIAH EDIT ADDITION
         <Stack.Item>
           <Button
             onClick={props.handleLoadout}
@@ -592,13 +591,12 @@ export const MainPage = (props: { openSpecies: () => void }) => {
 
                   <Stack.Item grow>
                     <CharacterPreview
-                      height="80%" // PARIAH EDIT - ORIGINAL: height="100%"
+                      height="80%"
                       id={data.character_preview_view}
                     />
                   </Stack.Item>
 
                   <Dropdown
-                    // PARIAH EDIT ADDITION
                     width="100%"
                     position="relative"
                     selected={data.preview_selection}

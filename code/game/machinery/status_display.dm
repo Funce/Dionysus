@@ -30,7 +30,7 @@
 
 	var/obj/effect/overlay/status_display_text/message1_overlay
 	var/obj/effect/overlay/status_display_text/message2_overlay
-	var/current_picture = ""
+	var/current_picture = "default"
 	var/current_mode = SD_BLANK
 	var/message1 = ""
 	var/message2 = ""
@@ -442,6 +442,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 		shuttle_id = port.id
 	update()
 
+
+/obj/machinery/status_display/syndie
+	name = "syndicate status display"
+	current_picture = "syndie"
 
 /// Pictograph display which the AI can use to emote.
 /obj/machinery/status_display/ai

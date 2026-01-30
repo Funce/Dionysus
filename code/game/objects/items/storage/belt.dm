@@ -265,8 +265,8 @@
 		/obj/item/clothing/mask/surgical,
 		/obj/item/clothing/mask/breath,
 		/obj/item/clothing/mask/breath/medical,
-		/obj/item/reagent_containers/glass/vial, //PARIAH EDIT ADDITION
-		/obj/item/hypospray/mkii, //PARIAH EDIT ADDITION
+		/obj/item/reagent_containers/glass/vial,
+		/obj/item/hypospray/mkii,
 		/obj/item/scalpel,
 		/obj/item/circular_saw,
 		/obj/item/bonesetter,

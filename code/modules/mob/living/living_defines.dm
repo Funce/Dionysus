@@ -7,9 +7,11 @@ DEFINE_INTERACTABLE(/mob/living)
 		HEALTH_HUD = 'icons/mob/huds/hud.dmi',
 		STATUS_HUD = 'icons/mob/huds/hud.dmi',
 	)
-	//pressure_resistance = 10
 
 	hud_type = /datum/hud/living
+
+	/// The last time a client disconnected or left the mob. Should not be used as an indicator to see if the mob is currently owned.
+	var/last_client_time
 
 	///Tracks the scale of the mob transformation matrix in relation to its identity. Use update_transform(resize) to change it.
 	var/current_size = RESIZE_DEFAULT_SIZE

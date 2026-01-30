@@ -298,14 +298,6 @@ SUBSYSTEM_DEF(job)
 			JobDebug("GRJ skipping leadership role, Player: [player], Job: [job]")
 			continue
 
-		/*
-		//PARIAH EDIT ADDITION
-		if(job.departments_bitflags & DEPARTMENT_BITFLAG_CENTRAL_COMMAND) //If you want a CC position, select it!
-			JobDebug("GRJ skipping Central Command role, Player: [player], Job: [job]")
-			continue
-		//PARIAH EDIT END
-		*/
-
 		// This check handles its own output to JobDebug.
 		if(check_job_eligibility(player, job, "GRJ", add_job_to_log = TRUE) != JOB_AVAILABLE)
 			continue
@@ -629,7 +621,7 @@ SUBSYSTEM_DEF(job)
 		wageslave.mind.set_note(NOTES_BANK_ACCOUNT, list("Account ID: [wageslave.account_id]<br>Account PIN: [bank.account_pin]"))
 		to_chat(player_client, span_obviousnotice("Your bank account pin is: <b>[bank.account_pin]</b>"))
 
-		setup_alt_job_items(wageslave, job, player_client) //PARIAH EDIT ADDITION
+		setup_alt_job_items(wageslave, job, player_client)
 
 	job.after_spawn(equipping, player_client)
 
@@ -1089,3 +1081,31 @@ SUBSYSTEM_DEF(job)
 			return TRUE
 	SSticker.mode.setup_error += "Required jobs not present."
 	return FALSE
+
+/// Adds back a job slot. Used for cryoing or clocking out (if we ever add that)
+/datum/controller/subsystem/job/proc/FreeRole(rank)
+	if(!rank)
+		stack_trace("FreeRole called to free job slot with no rank specified")
+		return
+	var/datum/job/job = GetJob(rank)
+	if(!job)
+		stack_trace("FreeRole could not map rank [rank] to a job slot")
+		return FALSE
+	log_econ("Modifying job slots of [job.title]. Existing slots: [job.current_positions]/[job.total_positions] New slots: [max(0, job.current_positions - 1)]/[job.total_positions]")
+	job.current_positions = max(0, job.current_positions - 1)
+
+/// Used for clocking back in, re-claiming the previously freed role. Returns false if no slot is available.
+/datum/controller/subsystem/job/proc/OccupyRole(rank)
+	if(!rank)
+		stack_trace("OccupyRole called to free job slot with no rank specified")
+		return FALSE
+	var/datum/job/job = GetJob(rank)
+	if(!job)
+		stack_trace("FreeRole could not map rank [rank] to a job slot")
+		return FALSE
+	if(job.current_positions >= job.total_positions)
+		log_econ("Modifying job slots of [job.title] failed due to no job slot being available. Current slots: [job.current_positions]/[job.total_positions]")
+		return FALSE
+	log_econ("Modifying job slots of [job.title]. Existing slots: [job.current_positions]/[job.total_positions] New slots: [job.current_positions + 1]/[job.total_positions]")
+	job.current_positions = job.current_positions + 1
+	return TRUE

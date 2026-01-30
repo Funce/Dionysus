@@ -1,7 +1,7 @@
 /obj/item/wallframe/light_switch
 	name = "light switch frame"
-	icon = 'modular_pariah/modules/aesthetics/lightswitch/icons/lightswitch.dmi'
-	icon_state = "lightswitch_frame"
+	icon = 'icons/obj/lightswitch.dmi'
+	icon_state = "lightswitch-base"
 	result_path = /obj/machinery/light_switch
 	pixel_shift = 26
 
@@ -14,7 +14,7 @@
 
 /datum/design/lightswitch_frame
 	name = "Light Switch (Wallframe)"
-	id = "lightswitch_frame"
+	id = "lightswitch-base"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(
 		/datum/material/iron = 200,
@@ -27,7 +27,7 @@
 DEFINE_INTERACTABLE(/obj/machinery/light_switch)
 /obj/machinery/light_switch
 	name = "light switch"
-	icon = 'modular_pariah/modules/aesthetics/lightswitch/icons/lightswitch.dmi'
+	icon = 'icons/obj/lightswitch.dmi'
 	icon_state = "lightswitch-base"
 	base_icon_state = "lightswitch"
 	desc = "Make dark."
@@ -163,7 +163,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 			did_anything = set_lights(!area.lightswitch)
 
 	if(did_anything)
-		playsound(src, 'modular_pariah/modules/aesthetics/lightswitch/sound/lightswitch.ogg', 100, 1)
+		playsound(src, 'sound/effects/lightswitch.ogg', 100, 1)
 
 	return TRUE
 

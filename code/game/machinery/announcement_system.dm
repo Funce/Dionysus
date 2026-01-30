@@ -100,10 +100,10 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		message = CompileText(newhead, user, rank)
 	else if(message_type == "ARRIVALS_BROKEN")
 		message = "The arrivals shuttle has been damaged. Docking for repairs..."
-	//PARIAH EDIT
-	else if(message_type == "CRYOSTORAGE")
+	else if(message_type == "CRYO_JOIN") // Special case in case we want to properly support both cryo messages.
+		message = "[user][rank ? ", [rank]" : ""] has woken up from cryo storage."
+	else if(message_type == "CRYO_LEAVE")
 		message = "[user][rank ? ", [rank]" : ""] has been moved to cryo storage."
-	//PARIAH EDIT END
 	broadcast(message, channels)
 
 /// Sends a message to the appropriate channels.
