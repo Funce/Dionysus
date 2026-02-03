@@ -7,7 +7,7 @@ GLOBAL_LIST_EMPTY(all_huds)
 GLOBAL_LIST_EMPTY(huds_by_category)
 
 //GLOBAL HUD LIST
-GLOBAL_LIST_INIT(huds, list(
+GLOBAL_LIST_INIT(huds, alist(
 	DATA_HUD_SECURITY_BASIC = new/datum/atom_hud/data/human/security/basic(),
 	DATA_HUD_SECURITY_ADVANCED = new/datum/atom_hud/data/human/security/advanced(),
 	DATA_HUD_MEDICAL_BASIC = new/datum/atom_hud/data/human/medical/basic(),
@@ -162,6 +162,9 @@ GLOBAL_LIST_INIT(huds, list(
 /// add new_hud_atom to this hud
 /datum/atom_hud/proc/add_atom_to_hud(atom/new_hud_atom)
 	if(!new_hud_atom)
+		return FALSE
+	if(QDELETED(new_hud_atom))
+		stack_trace("[__PROC__] was passed a qdeleted atom!")
 		return FALSE
 
 	LAZYDISTINCTADD(new_hud_atom.in_atom_huds, src)
