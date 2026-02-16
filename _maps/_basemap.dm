@@ -1,3 +1,4 @@
-#include "map_files\runtime_station.dmm"
-#ifdef CIBUILDING
-#endif
+#include "start.dmm"
+
+/area/station/maintenance/_powered
+	requires_power = FALSE

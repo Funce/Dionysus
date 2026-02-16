@@ -33,7 +33,6 @@ GLOBAL_PROTECT(admin_verbs_admin)
 	/datum/admins/proc/show_player_panel, /*shows an interface for individual players, with various links (links require additional flags*/
 	/datum/admins/proc/check_death_info, /*Shows the Time of Death interface for the given player*/
 	/datum/verbs/menu/Admin/verb/playerpanel,
-	/client/proc/game_panel, /*game panel, allows to change game-mode etc*/
 	/client/proc/check_ai_laws, /*shows AI and borg laws*/
 	/client/proc/ghost_pool_protection, /*opens a menu for toggling ghost roles*/
 	/datum/admins/proc/toggleooc, /*toggles ooc on/off for everyone*/
@@ -113,6 +112,8 @@ GLOBAL_LIST_INIT(admin_verbs_fun, list(
 	/client/proc/set_title_music,
 	/client/proc/restore_ghost_character,
 	/datum/admins/proc/station_traits_panel,
+	/client/proc/admin_power_restore,
+	/client/proc/admin_power_destore,
 	))
 GLOBAL_PROTECT(admin_verbs_fun)
 GLOBAL_LIST_INIT(admin_verbs_spawn, list(/datum/admins/proc/spawn_atom, /datum/admins/proc/podspawn_atom, /datum/admins/proc/spawn_cargo, /datum/admins/proc/spawn_objasmob, /client/proc/respawn_character, /datum/admins/proc/beaker_panel, /client/proc/spawn_chemdisp_cartridge))
@@ -138,7 +139,6 @@ GLOBAL_PROTECT(admin_verbs_server)
 	/client/proc/toggle_require_discord,
 	/client/proc/toggle_hub,
 	/client/proc/toggle_cdn,
-	/client/proc/set_game_mode
 	)
 GLOBAL_LIST_INIT(admin_verbs_debug, world.AVerbsDebug())
 GLOBAL_PROTECT(admin_verbs_debug)
@@ -189,7 +189,6 @@ GLOBAL_PROTECT(admin_verbs_debug)
 	/client/proc/print_cards,
 	#ifdef TESTING
 	/client/proc/check_missing_sprites,
-	/client/proc/run_dynamic_simulations,
 	#endif
 	/client/proc/display_sendmaps,
 	/datum/admins/proc/create_or_modify_area,
@@ -437,13 +436,6 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 		return
 	holder.unban_panel()
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Unbanning Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-/client/proc/game_panel()
-	set name = "Game Panel"
-	set category = "Admin.Game"
-	if(holder)
-		holder.Game()
-	SSblackbox.record_feedback("tally", "admin_verb", 1, "Game Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/poll_panel()
 	set name = "Server Poll Management"
@@ -1004,35 +996,3 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	var/datum/browser/popup = new(mob, "spellreqs", "Spell Requirements", 600, 400)
 	popup.set_content(page_contents)
 	popup.open()
-
-/client/proc/set_game_mode()
-	set name = "Set Gamemode"
-	set category = "Debug"
-
-	if(!check_rights(R_SERVER))
-		return
-
-	if(Master.current_runlevel > RUNLEVEL_LOBBY)
-		to_chat(usr, span_adminnotice("You cannot set the gamemode after the round has started!"))
-		return
-
-	var/list/selectable_gamemodes = subtypesof(/datum/game_mode)
-	for(var/datum/game_mode/path as anything in selectable_gamemodes)
-		if(isabstract(path))
-			selectable_gamemodes -= path
-
-	var/gamemode_path = input(usr, "Select Gamemode", "Set Gamemode") as null|anything in selectable_gamemodes
-	if(!gamemode_path)
-		return
-
-	var/fake_name = input(usr, "Fake Gamemode name?", "Set Gamemode") as null|text
-	if(fake_name)
-		SSticker.mode_display_name = fake_name
-
-	var/announce = alert(usr, "Announce to players?", "Set Gamemode", "Yes", "No")
-
-	SSticker.mode = new gamemode_path
-	if(announce == "Yes")
-		to_chat(world, span_boldannounce("The gamemode is now: [fake_name ? SSticker.mode_display_name : SSticker.mode.name]."))
-
-	message_admins("[key_name_admin(usr)] has set the gamemode to [SSticker.mode.type].")
